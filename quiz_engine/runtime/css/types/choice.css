@@ -1,0 +1,30 @@
+/* ── types/choice.css: options of scq, mcq and tf ── */
+.qz-options{display:flex;flex-direction:column;gap:.5rem}
+.qz-opt{font:inherit;color:inherit;text-align:left;display:flex;align-items:center;gap:.8rem;width:100%;padding:.7rem .9rem;border-radius:12px;
+  border:1.5px solid var(--qz-line);background:transparent;cursor:pointer;transition:transform .12s}
+.qz-opt:hover:not(:disabled){border-color:var(--qz-acc)}
+.qz-opt:active:not(:disabled){transform:scale(.985)}
+.qz-opt:disabled{cursor:default}
+/* The key: a circle (one answer) or a rounded square (several), holding the option's digit */
+.qz-opt-key{flex:none;width:1.8rem;height:1.8rem;border-radius:50%;border:1.5px solid var(--qz-line);display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;font-weight:700;color:var(--qz-mut)}
+.qz-multi .qz-opt-key{border-radius:7px}
+.qz-opt-text{flex:1;line-height:1.4}
+
+.qz-opt.is-picked{border-color:var(--qz-acc);background:var(--qz-acc-bg)}
+.qz-opt.is-picked .qz-opt-key{background:var(--qz-acc);border-color:var(--qz-acc);color:var(--qz-card)}
+.qz-opt.is-right{border-color:var(--qz-good);background:var(--qz-good-bg);color:var(--qz-good);animation:qz-pop .35s cubic-bezier(.3,1.6,.5,1)}
+.qz-opt.is-right .qz-opt-key{background:var(--qz-good);border-color:var(--qz-good);color:var(--qz-good-bg)}
+.qz-opt.is-wrong{border-color:var(--qz-bad);background:var(--qz-bad-bg);animation:qz-shake .4s}
+.qz-opt.is-wrong .qz-opt-key{background:var(--qz-bad);border-color:var(--qz-bad);color:#fff}
+.qz-opt.is-missed{border-color:var(--qz-good);border-style:dashed}
+.qz-opt:disabled:not(.is-right):not(.is-wrong):not(.is-missed){opacity:.55}
+@keyframes qz-shake{20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+
+/* True / false: two big buttons side by side */
+.qz-tf{flex-direction:row}
+.qz-tf .qz-opt{justify-content:center;padding:1rem;font-weight:600;font-size:1.05rem}
+.qz-tf .qz-opt-text{flex:none}
+
+@media(pointer:coarse){.qz-opt{min-height:48px}}
+@media(prefers-reduced-motion:reduce){.qz-opt{transition:none}.qz-opt.is-right,.qz-opt.is-wrong{animation:none}}

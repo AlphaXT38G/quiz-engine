@@ -1,0 +1,53 @@
+{
+  "title": "A bit of everything",
+  "questions": [
+    {
+      "type": "mcq",
+      "question": "Which of these are **prime numbers**?",
+      "options": ["2", "9", "13", "21", "29"],
+      "answer": [0, 2, 4],
+      "explanation": "9 = 3 × 3 and 21 = 3 × 7; 2, 13 and 29 have no other divisor than 1 and themselves."
+    },
+    {
+      "type": "tf",
+      "question": "The derivative of x² is 2x.",
+      "answer": true,
+      "explanation": "(xⁿ)' = n·xⁿ⁻¹, so (x²)' = 2x."
+    },
+    {
+      "type": "flow",
+      "question": "Complete the flowchart: it says whether **n** is even or odd.",
+      "nodes": {
+        "start": {"text": "Start", "shape": "round"},
+        "read": "Read n",
+        "test": {"text": "n mod 2 = 0 ?", "shape": "diamond"},
+        "even": {"blank": ["even", "n is even", "pair"]},
+        "odd": {"blank": ["odd", "n is odd", "impair"]},
+        "end": {"text": "End", "shape": "round"}
+      },
+      "rows": [["start"], ["read"], ["test"], ["even", "odd"], ["end"]],
+      "edges": [["start", "read"], ["read", "test"], ["test", "even", "yes"], ["test", "odd", "no"], ["even", "end"], ["odd", "end"]],
+      "explanation": "n mod 2 is the remainder of n divided by 2: 0 for an even number."
+    },
+    {
+      "type": "order",
+      "question": "Put the planets in order, from the **closest to the Sun** to the farthest.",
+      "items": [
+        {"img": "img/mercury.svg", "label": "Mercury"},
+        {"img": "img/venus.svg", "label": "Venus"},
+        {"img": "img/earth.svg", "label": "Earth"},
+        {"img": "img/mars.svg", "label": "Mars"},
+        {"img": "img/jupiter.svg", "label": "Jupiter"}
+      ],
+      "explanation": "Mercury, Venus, Earth, Mars, then the gas giant Jupiter, past the asteroid belt."
+    },
+    {
+      "type": "plot",
+      "question": "Draw the curve of **y = x²**.",
+      "fn": "x^2",
+      "x": [-3, 3],
+      "y": [-1, 9],
+      "explanation": "A parabola: 0 at x = 0, 1 at ±1, 4 at ±2, 9 at ±3, symmetric about the y axis."
+    }
+  ]
+}

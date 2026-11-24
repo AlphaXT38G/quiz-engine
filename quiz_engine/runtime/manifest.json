@@ -1,0 +1,33 @@
+{
+  "js": [
+    "js/core.js",
+    "js/text.js",
+    "js/sound.js",
+    "js/expr.js",
+    "js/flowedges.js",
+    "js/plotdraw.js",
+    "js/types/choice.js",
+    "js/types/truefalse.js",
+    "js/types/ordering.js",
+    "js/types/flow.js",
+    "js/types/plot.js",
+    "js/pick.js",
+    "js/selpanels.js",
+    "js/launch.js",
+    "js/select.js",
+    "js/run.js",
+    "js/results.js",
+    "js/view.js"
+  ],
+  "css": [
+    "css/view.css",
+    "css/select.css",
+    "css/launch.css",
+    "css/run.css",
+    "css/results.css",
+    "css/types/choice.css",
+    "css/types/ordering.css",
+    "css/types/flow.css",
+    "css/types/plot.css"
+  ]
+}

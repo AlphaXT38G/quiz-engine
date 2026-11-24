@@ -1,0 +1,72 @@
+<!doctype html>
+<!-- The demo host: a stand-in for the notes page (its colour tokens, one course card with its
+     Quiz button) that opens the example quiz exactly as notes-engine does: the cards are hidden,
+     the quiz view is shown in their place, the URL gets #quiz/<subject>, and the browser's back
+     button or the quiz's own arrow bring the cards back. Built by `python -m quiz_engine demo`. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiz demo</title>
+<link rel="stylesheet" href="quiz/quiz.css">
+<style>
+:root{--bg:#f5f6f8;--fg:#15171a;--card:#fff;--line:#e2e5ea;--acc:#2457c5;--acc-bg:#eaf0fd;--mut:#6b7280;--new:#1d7a46;--new-bg:#dcf3e5}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#121417;--fg:#e9eaec;--card:#1b1e23;--line:#2c3037;--acc:#8ab0ff;--acc-bg:#232b3d;--mut:#8b93a1;--new:#7ee0a5;--new-bg:#1d3a2a}}
+:root[data-theme=dark]{--bg:#121417;--fg:#e9eaec;--card:#1b1e23;--line:#2c3037;--acc:#8ab0ff;--acc-bg:#232b3d;--mut:#8b93a1;--new:#7ee0a5;--new-bg:#1d3a2a}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:60rem;margin:0 auto;padding:1.5rem 1rem 3rem}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+header h1{margin:0;font-size:1.5rem}
+.theme{font:inherit;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:999px;padding:.4rem .9rem;cursor:pointer}
+section.card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--acc);border-radius:12px;padding:1rem 1.2rem;max-width:28rem}
+section.card h2{margin:.2rem 0 .8rem;font-size:1.15rem}
+.code{font-size:.75rem;color:var(--mut);text-transform:uppercase;letter-spacing:.08em}
+.links{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.4rem}
+.links a,.links button{font:inherit;color:var(--acc);text-decoration:none;background:none;border:0;padding:.3rem 0;cursor:pointer;text-align:left}
+.links button{font-weight:600}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><h1>Demo notes</h1><button class="theme" type="button" id="theme">Light / dark</button></header>
+  <main id="cards">
+    <section class="card"><span class="code">demo</span><h2>Computer systems</h2>
+      <ul class="links">
+        <li><a href="#">Course notes</a></li>
+        <li><button type="button" data-quiz="demo" data-title="Computer systems">▶ Quiz</button></li>
+        <li><a href="#">3 weekly notes</a></li>
+      </ul>
+    </section>
+  </main>
+  <div id="quiz" hidden></div>
+</div>
+<script src="quiz/quiz.js"></script>
+<script>
+(function () {
+  var cards = document.getElementById("cards"), host = document.getElementById("quiz");
+  function show(id, title) {
+    cards.hidden = true; host.hidden = false;
+    QuizEngine.open(host, { url: "quiz/" + id + "/data.json", title: title, onClose: function () { history.back(); } });
+  }
+  function hide() { QuizEngine.close(); host.hidden = true; cards.hidden = false; }
+  // The hash says what is shown: #quiz/<subject>, or nothing for the cards
+  function route() {
+    var m = location.hash.match(/^#quiz\/([\w-]+)$/);
+    var btn = m && document.querySelector('[data-quiz="' + m[1] + '"]');
+    if (btn) show(m[1], btn.getAttribute("data-title")); else hide();
+  }
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest("[data-quiz]");
+    if (b) location.hash = "quiz/" + b.getAttribute("data-quiz");
+  });
+  window.addEventListener("hashchange", route);
+  route();
+  document.getElementById("theme").addEventListener("click", function () {
+    var r = document.documentElement, dark = getComputedStyle(r).getPropertyValue("--bg").trim() === "#121417";
+    r.setAttribute("data-theme", dark ? "light" : "dark");
+  });
+})();
+</script>
+</body>
+</html>

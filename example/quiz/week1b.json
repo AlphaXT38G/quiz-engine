@@ -1,0 +1,19 @@
+{
+  "title": "Pipelines",
+  "questions": [
+    {
+      "type": "scq",
+      "question": "How many stages does the classic RISC pipeline have?",
+      "options": ["3", "4", "5", "7"],
+      "answer": 2,
+      "shuffle": false,
+      "explanation": "Fetch, decode, execute, memory, write-back."
+    },
+    {
+      "type": "tf",
+      "question": "Forwarding removes every data hazard.",
+      "answer": false,
+      "explanation": "A load followed by an instruction using its result still needs one stall."
+    }
+  ]
+}

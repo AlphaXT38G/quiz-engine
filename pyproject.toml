@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quiz-engine"
+version = "0.1.0"
+description = "Quizzes for a notes site: validated JSON questions and a small browser runtime."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = []  # the standard library only; node is optional (syntax check of the runtime)
+
+[project.scripts]
+quiz-engine = "quiz_engine.cli:main"
+
+[tool.setuptools]
+packages = ["quiz_engine", "quiz_engine.types"]
+
+[tool.setuptools.package-data]
+quiz_engine = ["runtime/**/*", "demo/*"]

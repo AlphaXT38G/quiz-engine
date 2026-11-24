@@ -1,0 +1,23 @@
+{
+  "title": "Virtual memory",
+  "questions": [
+    {
+      "type": "scq",
+      "question": "What translates a virtual address into a physical one?",
+      "options": ["The MMU, with the page table", "The ALU", "The compiler", "The cache controller"],
+      "answer": 0
+    },
+    {
+      "type": "mcq",
+      "question": "What can a page table entry hold?\nPick every right answer.",
+      "options": ["A valid bit", "The physical frame number", "Access rights", "The page's contents"],
+      "answer": [0, 1, 2],
+      "explanation": "The entry describes the page; its contents are in the frame itself."
+    },
+    {
+      "type": "tf",
+      "question": "The TLB is a cache of `page table` entries.",
+      "answer": true
+    }
+  ]
+}
