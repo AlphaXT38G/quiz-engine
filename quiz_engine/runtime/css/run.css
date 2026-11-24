@@ -23,5 +23,20 @@
 .qz-next{order:0}
 @keyframes qz-pop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
 
-@media(max-width:480px){.qz-card{padding:1rem .9rem .9rem}.qz-question{font-size:1.04rem}}
+/* Phones: a question and its answers on one screen. Tighter spacing, and Confirm kept at the
+   bottom of the window (the foot sticks there until the answer is given; then the verdict and
+   the explanation come into view, run.js). --qz-dock-gap: room the host keeps free on the right
+   of that bar for a button of its own in the bottom right corner (0 by default) */
+@media(max-width:560px){
+  .qz-progress{margin-bottom:.6rem}
+  .qz-card{padding:.85rem .8rem .2rem}
+  .qz-card-tags{margin-bottom:.5rem}
+  .qz-question{font-size:1.02rem;line-height:1.45;margin-bottom:.75rem}
+  .qz-card-foot{margin-top:.6rem;padding-bottom:.8rem}
+  .qz-card-foot:not(.is-answered){position:sticky;bottom:0;z-index:2;margin-left:-.8rem;margin-right:-.8rem;
+    padding:.6rem calc(.8rem + var(--qz-dock-gap,0px)) calc(.6rem + env(safe-area-inset-bottom,0px)) .8rem;
+    background:var(--qz-card);border-top:1px solid var(--qz-line);border-radius:0 0 var(--qz-radius) var(--qz-radius);
+    -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}  /* a screen's card may be translucent: what scrolls under the bar is blurred, not read through */
+  .qz-card-foot:not(.is-answered)>.qz-btn{flex:1}
+}
 @media(prefers-reduced-motion:reduce){.qz-card,.qz-verdict,.qz-explanation{animation:none}.qz-progress-fill{transition:none}}

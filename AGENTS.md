@@ -147,7 +147,10 @@ select ── back arrow / Escape ──▶ onClose() (the host shows its page a
    20, all). The count follows every change. The selection is remembered per quiz
    (localStorage `qz-sel:<url>`) as what was left unchecked, so a chapter or a kind of exercise
    added since comes checked.
-2. **Run** (`run.js`): the drawn questions, shuffled, one at a time. The question's type renders
+2. **Run** (`run.js`): the drawn questions, shuffled, one at a time. On a phone (560 px and
+   less) a question is meant to fit the screen: tight spacing, Confirm stuck to the bottom of the
+   window until the answer is given, then the verdict and explanation scrolled into view, and
+   each new question scrolled to its top. The question's type renders
    its answer area; Confirm (or Enter) grades it once, the type reveals what was right, a verdict
    (Correct / Partly right / Wrong, the streak from 3 in a row), the explanation, Next.
 3. **Results** (`results.js`): the score in a ring, a word, the score per family, retry the
@@ -201,7 +204,10 @@ Halloween, gold and Art Deco in the jazz bar...):
   `--qz-hero-fg` (its text, and Start's background), `--qz-go-fg` (Start's text and icon);
 - `.qz-hero-deco`, an empty layer under the launch zone's content (no clicks), for its
   `::before` / `::after` or a background;
-- `.qz-progress-fill`, the progress bar's fill.
+- `.qz-progress-fill`, the progress bar's fill;
+- `--qz-dock-gap`, on `.qz` (0 by default): on phones, Confirm is stuck to the bottom of the
+  window; this is the room kept free on the right of that bar for a button of the host's own in
+  the bottom right corner (notes-engine's music button).
 
 These are a contract: renaming one breaks the host's look silently. Add hooks rather than
 change them, and list them here.

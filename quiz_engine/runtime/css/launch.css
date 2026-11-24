@@ -42,8 +42,10 @@
 
 /* Phones: stacked, Start across the whole width */
 @media(max-width:560px){
-  .qz-hero{flex-direction:column;align-items:stretch;text-align:center;padding:1.2rem 1.1rem}
+  .qz-hero{flex-direction:column;align-items:stretch;gap:.9rem;text-align:center;padding:1rem 1rem 1.1rem}
   .qz-hero-count{justify-content:center}
-  .qz-go{justify-content:center}
+  .qz-hero-n{font-size:2.7rem}
+  .qz-hero-sub{font-size:.9rem}
+  .qz-go{justify-content:center;font-size:1.15rem;padding:.8rem 1.6rem .8rem 1.3rem}
 }
 @media(prefers-reduced-motion:reduce){.qz-hero::after,.qz-go::before,.qz-hero-n.is-pop{animation:none}.qz-go,.qz-go-icon{transition:none}}

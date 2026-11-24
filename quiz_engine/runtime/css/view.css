@@ -44,5 +44,6 @@
 .qz code{font-size:.92em;background:var(--qz-acc-bg);padding:.05em .3em;border-radius:4px}
 
 /* Touch screens: every control at least 44 px */
+@media(max-width:560px){.qz-head{margin-bottom:.7rem;gap:.6rem}.qz-title{font-size:1.15rem}}
 @media(pointer:coarse){.qz-icon{width:2.9rem;height:2.9rem}.qz-btn{min-height:44px}.qz-link{min-height:44px}}
 @media(prefers-reduced-motion:reduce){.qz-screen{animation:none}.qz-icon,.qz-btn{transition:none}}
