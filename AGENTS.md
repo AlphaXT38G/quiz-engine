@@ -19,8 +19,11 @@ notes-engine                     its build writes dist/quiz/; its page has the Q
                                  and opens the quiz as a view inside index.html
 ```
 
-The three are separate repositories. notes-engine pins a tag of this one; a change to what a
-quiz file may contain (a new type, a new key) comes with a new tag, never silently.
+The three are separate repositories. notes-engine reads this one the way a notes repository
+reads notes-engine: on a computer, the checkout next to it (`../quiz-engine`); on GitHub, its
+publish workflow fetches this repository's `main` beside the engine. So what is pushed to `main`
+is online at the next build of the notes: keep `main` working, and never remove a type or a key
+that quiz files already use.
 
 ## Repository layout
 
