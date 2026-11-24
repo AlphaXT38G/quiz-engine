@@ -34,7 +34,7 @@ QZ.run = function (view, host, questions) {
     progress();
     handle = type.render(q, { base: view.base, sound: QZ.sound, changed: function () { confirmBtn.disabled = !handle.ready(); } });
     confirmBtn = QZ.button("qz-btn qz-btn-primary", "Confirm", confirm);
-    confirmBtn.disabled = true;
+    confirmBtn.disabled = !handle.ready();  // some types are ready from the start (an order)
     var foot = QZ.el("div", "qz-card-foot", [confirmBtn]);
     var card = QZ.el("div", "qz-card", [
       QZ.el("div", "qz-card-tags", [QZ.el("span", "qz-tag", [type.label]), QZ.el("span", "qz-tag qz-tag-soft", [chapterOf[q.id] || ""])]),
@@ -79,13 +79,15 @@ QZ.run = function (view, host, questions) {
   show();
   return {
     key: function (e) {
+      // The type first (digits, arrows; Enter in a box to fill goes to the next box)
+      if (!answered && handle.key && handle.key(e)) return true;
       // Enter confirms / goes on wherever the focus is (an option just clicked keeps it: Enter
-      // must not click it again), except in a field where Enter belongs to the typing
-      if (e.key === "Enter" && !/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName || "")) {
+      // must not click it again), but not in a text area, where it is a new line
+      if (e.key === "Enter" && e.target.tagName !== "TEXTAREA") {
         if (answered) next(); else confirm();
         return true;
       }
-      return !answered && handle.key ? handle.key(e) : false;
+      return false;
     }
   };
 };

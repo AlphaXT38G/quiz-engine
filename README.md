@@ -55,9 +55,24 @@ swent/quiz/week2.json
 | `scq` | one right option |
 | `mcq` | several right options (partly right answers score partly) |
 | `tf` | true or false |
+| `order` | put pictures (or words) in order, by dragging them |
+| `flow` | a flowchart or an organisation chart, with boxes to fill in |
+| `plot` | draw the curve of a function with the mouse or a finger |
 
-More types are coming: putting photos in order, completing a diagram, flowcharts, drawing a
-graph, a world map.
+```json
+{"type": "order", "question": "From the closest to the Sun",
+ "items": [{"img": "img/mercury.svg", "label": "Mercury"}, {"img": "img/venus.svg", "label": "Venus"}, "Earth"]}
+
+{"type": "flow", "question": "Complete the flowchart",
+ "nodes": {"start": {"text": "Start", "shape": "round"}, "test": {"text": "n mod 2 = 0 ?", "shape": "diamond"},
+           "even": {"blank": ["even", "pair"]}, "odd": {"blank": "odd"}},
+ "rows": [["start"], ["test"], ["even", "odd"]],
+ "edges": [["start", "test"], ["test", "even", "yes"], ["test", "odd", "no"]]}
+
+{"type": "plot", "question": "Draw y = x²", "fn": "x^2", "x": [-3, 3], "y": [-1, 9]}
+```
+
+`example/quiz/week3.json` has one of each. A world map is coming.
 
 Check a quiz before pushing (a typo in a key or an answer out of range is an error that names the
 file and the question):

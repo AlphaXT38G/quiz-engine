@@ -2,6 +2,8 @@
 
 import json
 import re
+import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -59,6 +61,29 @@ class ValidationTest(unittest.TestCase):
     def test_empty_questions(self):
         self.bad({"questions": []}, "non-empty list")
 
+    def test_order(self):
+        check_file(quiz({"type": "order", "question": "q", "items": ["a", {"img": "img/b.png", "label": "b"}]}), "f.json")
+        self.bad(quiz({"type": "order", "question": "q", "items": ["a"]}), "at least 2")
+        self.bad(quiz({"type": "order", "question": "q", "items": ["a", {"src": "b.png"}]}), "\"img\"")
+
+    FLOW = {"type": "flow", "question": "q", "nodes": {"a": "Start", "b": {"blank": ["x", "y"]}, "c": {"text": "?", "shape": "diamond"}},
+            "rows": [["a"], ["c"], ["b"]], "edges": [["a", "c"], ["c", "b", "yes"]]}
+
+    def test_flow(self):
+        check_file(quiz(self.FLOW), "f.json")
+        self.bad(quiz(dict(self.FLOW, rows=[["a"], ["b"]])), "exactly one row")
+        self.bad(quiz(dict(self.FLOW, edges=[["a", "z"]])), "bad edge")
+        self.bad(quiz(dict(self.FLOW, nodes={"a": "A", "b": "B", "c": "C"})), "at least one node")
+        self.bad(quiz(dict(self.FLOW, nodes=dict(self.FLOW["nodes"], c={"text": "?", "shape": "star"}))), "shape")
+
+    def test_plot(self):
+        ok = {"type": "plot", "question": "q", "fn": "2x^2 - sin(pi x)", "x": [-3, 3], "y": [-1, 9]}
+        check_file(quiz(ok), "f.json")
+        self.bad(quiz(dict(ok, fn="x^2 + foo(x)")), "unknown name 'foo'")
+        self.bad(quiz(dict(ok, fn="(x + 1")), "not closed")
+        self.bad(quiz(dict(ok, fn="x; alert(1)")), "unexpected character")
+        self.bad(quiz(dict(ok, y=[9, -1])), "min < max")
+
 
 class LoadTest(unittest.TestCase):
     def test_week_from_file_name(self):
@@ -66,8 +91,8 @@ class LoadTest(unittest.TestCase):
 
     def test_example_loads_in_natural_order(self):
         data = load_subject(EXAMPLE)
-        self.assertEqual([c["id"] for c in data["chapters"]], ["week1a", "week1b", "week2"])
-        self.assertEqual([c["week"] for c in data["chapters"]], [1, 1, 2])
+        self.assertEqual([c["id"] for c in data["chapters"]], ["week1a", "week1b", "week2", "week3"])
+        self.assertEqual([c["week"] for c in data["chapters"]], [1, 1, 2, 3])
         self.assertEqual(data["chapters"][0]["questions"][1]["id"], "week1a/1")
 
     def test_invalid_json_says_where(self):
@@ -76,6 +101,14 @@ class LoadTest(unittest.TestCase):
             with self.assertRaises(QuizError) as e:
                 load_subject(Path(d))
             self.assertIn("line 1", str(e.exception))
+
+    def test_missing_picture_is_an_error(self):
+        with tempfile.TemporaryDirectory() as d:
+            q = {"type": "order", "question": "q", "items": [{"img": "img/a.png"}, "b"]}
+            (Path(d) / "01.json").write_text(json.dumps(quiz(q)), encoding="utf-8")
+            with self.assertRaises(QuizError) as e:
+                load_subject(Path(d))
+            self.assertIn("img/a.png not found", str(e.exception))
 
     def test_build_subject_copies_assets_and_drops_stale_files(self):
         with tempfile.TemporaryDirectory() as d:
@@ -115,6 +148,22 @@ class RuntimeTest(unittest.TestCase):
         for p in list(bundle.RUNTIME.rglob("*.js")) + list((HERE / "quiz_engine").rglob("*.py")):
             n = len(p.read_text(encoding="utf-8").splitlines())
             self.assertLessEqual(n, 200, f"{p.name} has {n} lines")
+
+    @unittest.skipUnless(shutil.which("node"), "node is not installed")
+    def test_formula_parser(self):
+        # js/expr.js, the parser of plot questions, run in node: precedence, implicit products, errors
+        js = bundle.RUNTIME / "js"
+        script = (
+            "global.document={};global.window={};"
+            f"eval(require('fs').readFileSync({json.dumps(str(js / 'core.js'))},'utf8')"
+            f"+require('fs').readFileSync({json.dumps(str(js / 'expr.js'))},'utf8')+';global.QZ=QZ;');"
+            "const r=[['x^2',3],['-x^2',2],['2x^2 - 1',2],['2^3^2',0],['sin(pi x)',0.5],['3(x+1)',1],['1-2-3',0],['8/2/2',0],['log(100)',0]]"
+            ".map(c=>Math.round(QZ.expr(c[0])(c[1])*1e9)/1e9);"
+            "let errs=0;for(const b of ['x+','(x','foo(x)'])try{QZ.expr(b)}catch(e){errs++}"
+            "console.log(JSON.stringify([r,errs]));"
+        )
+        out = subprocess.run(["node", "-e", script], capture_output=True, text=True, check=True).stdout
+        self.assertEqual(json.loads(out), [[9, -4, 7, 512, 1, 6, -4, 2, 2], 3])
 
     def test_write_runtime(self):
         with tempfile.TemporaryDirectory() as d:

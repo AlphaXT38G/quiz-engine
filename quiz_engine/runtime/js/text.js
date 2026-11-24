@@ -28,3 +28,10 @@ QZ.block = function (tag, cls, s) {
   e.appendChild(QZ.rich(s));
   return e;
 };
+
+// An answer typed by hand, made comparable: "Éven!" and "  even " are the same answer
+// (case, accents, punctuation and extra spaces left out). Types with typed answers use it.
+QZ.normalize = function (s) {
+  return String(s).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ").trim();
+};

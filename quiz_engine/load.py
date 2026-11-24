@@ -13,6 +13,7 @@ the browser uses to remember what was missed.
 import json
 import re
 
+from .types import TYPES
 from .validate import QuizError, check_file
 
 # Week number from a file name, as notes-engine reads its weekly notes: 01, week3, week1a, week_2
@@ -45,6 +46,10 @@ def load_subject(quiz_dir):
     for f in files:
         data = read_json(f)
         check_file(data, f)
+        for i, q in enumerate(data["questions"]):  # the pictures a question shows must be there
+            for rel in TYPES[q["type"]].get("files", lambda q: [])(q):
+                if not (quiz_dir / rel).is_file():
+                    raise QuizError(f"{f}: question {i + 1} ({q['type']}): {rel} not found in {quiz_dir}")
         chapters.append({
             "id": f.stem,
             "title": data.get("title", f.stem),

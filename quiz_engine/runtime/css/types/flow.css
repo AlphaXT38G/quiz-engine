@@ -1,0 +1,28 @@
+/* ── types/flow.css: a chart of boxes (rows centred), its arrows in an SVG over it ── */
+.qz-flow{position:relative;display:flex;flex-direction:column;gap:2.2rem;padding:.4rem 1.6rem .4rem .4rem;overflow-x:auto}
+.qz-flow-row{display:flex;justify-content:center;gap:1.6rem;position:relative;z-index:1}
+.qz-flow-edges{position:absolute;left:0;top:0;overflow:visible;pointer-events:none;color:var(--qz-mut);z-index:0}
+.qz-flow-edges path{fill:none;stroke:currentColor;stroke-width:1.6}
+.qz-flow-edges text{fill:var(--qz-mut);font-size:12px;font-weight:600}
+
+.qz-node{position:relative;min-width:7rem;max-width:13rem;min-height:2.8rem;padding:.5rem .8rem;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;border:1.5px solid var(--qz-line);border-radius:8px;background:var(--qz-card);line-height:1.3}
+.qz-node-round{border-radius:999px}
+/* A diamond: two clipped layers behind the text (the border, then the fill), so that any width works */
+.qz-node-diamond{border:0;background:none;min-width:9rem;min-height:4.6rem;padding:.6rem 1.6rem}
+.qz-node-diamond::before,.qz-node-diamond::after{content:"";position:absolute;z-index:-1;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.qz-node-diamond::before{top:0;right:0;bottom:0;left:0;background:var(--qz-line)}
+.qz-node-diamond::after{top:2px;right:3px;bottom:2px;left:3px;background:var(--qz-card)}
+.qz-node-diamond{isolation:isolate}
+
+.qz-node-input{font:inherit;font-size:1rem;width:9rem;max-width:100%;text-align:center;padding:.3rem .4rem;border:0;border-bottom:2px dashed var(--qz-acc);
+  background:var(--qz-acc-bg);color:var(--qz-fg);border-radius:4px}
+.qz-node-input:focus{outline:none;border-bottom-style:solid}
+.qz-node.is-right{border-color:var(--qz-good);background:var(--qz-good-bg)}
+.qz-node.is-right .qz-node-input{background:transparent;border-bottom-color:transparent;color:var(--qz-good);font-weight:700}
+.qz-node.is-wrong{border-color:var(--qz-bad);background:var(--qz-bad-bg);animation:qz-shake .4s}
+.qz-node.is-wrong .qz-node-input{background:transparent;border-bottom-color:transparent;text-decoration:line-through;color:var(--qz-bad)}
+.qz-node-fix{font-size:.85rem;font-weight:700;color:var(--qz-good);margin-top:.15rem}
+
+@media(max-width:480px){.qz-flow{gap:1.8rem}.qz-flow-row{gap:.8rem}.qz-node{min-width:5.5rem}.qz-node-input{width:7rem}}
+@media(prefers-reduced-motion:reduce){.qz-node.is-wrong{animation:none}}
