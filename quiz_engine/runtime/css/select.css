@@ -27,14 +27,5 @@
 .qz-seg+.qz-seg{border-left:1px solid var(--qz-line)}
 .qz-seg.is-on{background:var(--qz-acc);color:var(--qz-card);font-weight:600}
 
-/* Count and Start, kept in view at the bottom while the lists scroll */
-.qz-start-bar{position:sticky;bottom:.75rem;display:flex;align-items:center;gap:1rem;background:var(--qz-card);border:1px solid var(--qz-line);
-  border-radius:999px;padding:.45rem .45rem .45rem 1.2rem;box-shadow:0 6px 24px rgba(0,0,0,.12)}
-.qz-count{flex:1;font-weight:600}
-.qz-start{padding-left:2rem;padding-right:2rem}
-
-/* Phones: the screens' music players sit in the bottom corners over the page, where a sticky bar
-   would stay under them; the page leaves room under its content to scroll it clear of them */
-@media(max-width:640px){.qz-start-bar{position:static}}
 @media(pointer:coarse){.qz-check{min-height:44px}.qz-chip,.qz-seg{min-height:44px}}
 @media(prefers-reduced-motion:reduce){.qz-chip{transition:none}}

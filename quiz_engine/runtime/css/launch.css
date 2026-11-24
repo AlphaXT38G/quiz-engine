@@ -1,0 +1,49 @@
+/* ── launch.css: the launch zone (launch.js): the count in big, a summary, the Start button ──
+   In the accent colour of the screen, with a light sweeping across it now and then and a ring
+   pulsing around Start. A host may restyle it through its tokens, which default to the quiz's:
+     --qz-hero-bg   its background        --qz-hero-fg   its text, and Start's background
+     --qz-go-fg     Start's text and icon
+   and decorate .qz-hero-deco, an empty layer under its content (pointer-events: none). */
+.qz-hero{--qz-hero-bg:var(--qz-acc);--qz-hero-fg:var(--qz-card);--qz-go-fg:var(--qz-acc);
+  position:relative;overflow:hidden;isolation:isolate;display:flex;align-items:center;gap:1.2rem;padding:1.4rem 1.5rem;border-radius:20px;
+  background:var(--qz-hero-bg);color:var(--qz-hero-fg);box-shadow:0 12px 32px rgba(0,0,0,.2)}
+/* Light from the top left, shade at the bottom right: depth on any colour */
+.qz-hero::before{content:"";position:absolute;top:0;right:0;bottom:0;left:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(120% 90% at 10% 0%,rgba(255,255,255,.28),transparent 55%),radial-gradient(90% 80% at 100% 100%,rgba(0,0,0,.22),transparent 60%)}
+/* A sheen sweeping across, every few seconds */
+.qz-hero::after{content:"";position:absolute;top:0;bottom:0;left:0;width:40%;z-index:-1;pointer-events:none;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.22),transparent);transform:translateX(-120%) skewX(-12deg);
+  animation:qz-sheen 5s ease-in-out 1s infinite}
+@keyframes qz-sheen{0%{transform:translateX(-120%) skewX(-12deg)}35%,100%{transform:translateX(320%) skewX(-12deg)}}
+.qz-hero-deco{position:absolute;top:0;right:0;bottom:0;left:0;z-index:-1;pointer-events:none}
+
+.qz-hero-text{flex:1;min-width:0}
+.qz-hero-count{display:flex;align-items:baseline;gap:.5rem}
+.qz-hero-n{font-size:3.4rem;font-weight:800;line-height:1;letter-spacing:-.02em}
+.qz-hero-n.is-pop{animation:qz-pop .4s cubic-bezier(.3,1.6,.5,1)}
+.qz-hero-unit{font-size:.85rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
+.qz-hero-sub{margin-top:.35rem;font-size:.95rem;opacity:.85}
+
+/* Start: big, in the zone's text colour, a ring pulsing around it */
+.qz-go{position:relative;flex:none;display:inline-flex;align-items:center;gap:.6rem;font:inherit;font-size:1.3rem;font-weight:800;letter-spacing:.02em;
+  padding:1rem 2.1rem 1rem 1.6rem;border:0;border-radius:999px;cursor:pointer;background:var(--qz-hero-fg);color:var(--qz-go-fg);
+  box-shadow:0 8px 20px rgba(0,0,0,.25);transition:transform .15s}
+.qz-go::before{content:"";position:absolute;top:-6px;right:-6px;bottom:-6px;left:-6px;border-radius:999px;border:2px solid var(--qz-hero-fg);
+  opacity:0;animation:qz-ring 2.2s ease-out infinite;pointer-events:none}
+@keyframes qz-ring{0%{opacity:.7;transform:scale(.92)}100%{opacity:0;transform:scale(1.18)}}
+.qz-go:hover:not(:disabled){transform:translateY(-2px) scale(1.04)}
+.qz-go:active:not(:disabled){transform:scale(.96)}
+.qz-go:focus-visible{outline:3px solid var(--qz-hero-fg);outline-offset:4px}
+.qz-go-icon{width:1.5rem;height:1.5rem;fill:currentColor;transition:transform .2s}
+.qz-go:hover:not(:disabled) .qz-go-icon{transform:translateX(3px)}
+.qz-go:disabled{opacity:.45;cursor:default;box-shadow:none}
+.qz-go:disabled::before{animation:none}
+.qz-hero.is-empty::after{animation:none}
+
+/* Phones: stacked, Start across the whole width */
+@media(max-width:560px){
+  .qz-hero{flex-direction:column;align-items:stretch;text-align:center;padding:1.2rem 1.1rem}
+  .qz-hero-count{justify-content:center}
+  .qz-go{justify-content:center}
+}
+@media(prefers-reduced-motion:reduce){.qz-hero::after,.qz-go::before,.qz-hero-n.is-pop{animation:none}.qz-go,.qz-go-icon{transition:none}}

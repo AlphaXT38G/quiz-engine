@@ -12,6 +12,8 @@
     "js/types/flow.js",
     "js/types/plot.js",
     "js/pick.js",
+    "js/selpanels.js",
+    "js/launch.js",
     "js/select.js",
     "js/run.js",
     "js/results.js",
@@ -20,6 +22,7 @@
   "css": [
     "css/view.css",
     "css/select.css",
+    "css/launch.css",
     "css/run.css",
     "css/results.css",
     "css/types/choice.css",
