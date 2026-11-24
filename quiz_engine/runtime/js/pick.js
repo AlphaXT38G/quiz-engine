@@ -58,13 +58,22 @@ QZ.pick = {
     return sel;
   },
 
-  // A remembered selection, cleaned of chapters and families that no longer exist
+  // What is remembered of a selection: what was left unchecked, so that a chapter or a kind of
+  // exercise added since comes checked, and one removed since is simply forgotten
+  save: function (data, sel) {
+    var all = QZ.pick.all(data);
+    return {
+      offChapters: Object.keys(all.chapters).filter(function (id) { return !sel.chapters[id]; }),
+      offFamilies: Object.keys(all.families).filter(function (id) { return !sel.families[id]; }),
+      limit: sel.limit || 0
+    };
+  },
   restore: function (data, saved) {
-    var fresh = QZ.pick.all(data);
-    if (!saved || !saved.chapters || !saved.families) return fresh;
-    var sel = { chapters: {}, families: {}, limit: saved.limit || 0 };
-    Object.keys(fresh.chapters).forEach(function (id) { if (saved.chapters[id]) sel.chapters[id] = true; });
-    Object.keys(fresh.families).forEach(function (id) { if (saved.families[id]) sel.families[id] = true; });
+    var sel = QZ.pick.all(data);
+    if (!saved || !saved.offChapters || !saved.offFamilies) return sel;
+    saved.offChapters.forEach(function (id) { delete sel.chapters[id]; });
+    saved.offFamilies.forEach(function (id) { delete sel.families[id]; });
+    sel.limit = saved.limit || 0;
     return sel;
   }
 };

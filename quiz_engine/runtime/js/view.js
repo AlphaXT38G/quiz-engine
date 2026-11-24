@@ -80,7 +80,7 @@
       view.data = data;
       view.selKey = "sel:" + opts.url;
       view.sel = QZ.pick.restore(data, QZ.store.get(view.selKey, null));
-      view.saveSel = function () { QZ.store.set(view.selKey, view.sel); };
+      view.saveSel = function () { QZ.store.set(view.selKey, QZ.pick.save(data, view.sel)); };
       view.start = function (qs) { show(view, "run", function (host) { return QZ.run(view, host, qs); }); };
       view.again = view.start;
       view.finish = function (results) { show(view, "results", function (host) { return QZ.results(view, host, results); }); };
