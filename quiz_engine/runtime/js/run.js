@@ -13,10 +13,11 @@ QZ.run = function (view, host, questions) {
   var scoreEl = QZ.el("span", "qz-progress-score");
   var fill = QZ.el("div", "qz-progress-fill");
   var stage = QZ.el("div", "qz-stage");
-  host.appendChild(QZ.el("div", "qz-run", [
+  var runEl = QZ.el("div", "qz-run", [
     QZ.el("div", "qz-progress", [QZ.el("div", "qz-progress-meta", [label, scoreEl]), QZ.el("div", "qz-progress-track", [fill])]),
     stage
-  ]));
+  ]);
+  host.appendChild(runEl);
 
   var handle = null, confirmBtn = null, nextBtn = null, answered = false;
 
@@ -45,7 +46,12 @@ QZ.run = function (view, host, questions) {
     card.qzFoot = foot;
     stage.textContent = "";
     stage.appendChild(card);
-    if (stage.scrollIntoView && i) stage.scrollIntoView({ block: "nearest" });
+    // The next question from its top: on a phone the last one's explanation left the page scrolled
+    // down. Only when the new card does not fit where it is (a wide window keeps still)
+    if (i && runEl.scrollIntoView) {
+      var top = runEl.getBoundingClientRect().top, bottom = card.getBoundingClientRect().bottom;
+      if (top < 0 || bottom > window.innerHeight) runEl.scrollIntoView({ block: "start" });
+    }
   }
 
   function confirm() {
@@ -61,6 +67,7 @@ QZ.run = function (view, host, questions) {
     var verdict = score === 1 ? ["is-right", "Correct"] : score > 0 ? ["is-partial", "Partly right"] : ["is-wrong", "Wrong"];
     var foot = stage.firstChild.qzFoot;
     foot.textContent = "";
+    foot.className += " is-answered";  // no longer stuck to the bottom of a phone's screen (run.css)
     foot.appendChild(QZ.el("div", "qz-verdict " + verdict[0], [verdict[1], streak >= 3 ? QZ.el("span", "qz-streak", [" · " + streak + " in a row"]) : null]));
     if (q.explanation) foot.appendChild(QZ.block("div", "qz-explanation", q.explanation));
     nextBtn = QZ.button("qz-btn qz-btn-primary qz-next", i + 1 < questions.length ? "Next" : "See results", next);
@@ -68,6 +75,8 @@ QZ.run = function (view, host, questions) {
     progress();
     fill.style.transform = "scaleX(" + ((i + 1) / questions.length) + ")";
     nextBtn.focus({ preventScroll: true });
+    // The verdict, the explanation and Next in view (on a phone they may fall below the window)
+    if (foot.scrollIntoView) foot.scrollIntoView({ block: "nearest" });
   }
 
   function next() {
