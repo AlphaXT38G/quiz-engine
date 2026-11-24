@@ -1,0 +1,27 @@
+/* ── run.css: a question being answered (progress, card, verdict, explanation) ── */
+.qz-progress{margin-bottom:1rem}
+.qz-progress-meta{display:flex;justify-content:space-between;font-size:.85rem;color:var(--qz-mut);margin-bottom:.35rem}
+.qz-progress-track{height:6px;border-radius:999px;background:var(--qz-line);overflow:hidden}
+/* scaleX, not width: only transform and opacity animate (notes-engine's rule) */
+.qz-progress-fill{height:100%;background:var(--qz-acc);transform-origin:left;transform:scaleX(0);transition:transform .4s ease-out}
+
+.qz-card{background:var(--qz-card);border:1px solid var(--qz-line);border-radius:var(--qz-radius);padding:1.2rem 1.2rem 1rem;animation:qz-in .3s ease-out both}
+.qz-card-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.7rem}
+.qz-tag{font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--qz-acc);background:var(--qz-acc-bg);border-radius:999px;padding:.2rem .6rem}
+.qz-tag-soft{color:var(--qz-mut);background:transparent;border:1px solid var(--qz-line);text-transform:none;letter-spacing:0;font-weight:500}
+.qz-tag-soft:empty{display:none}
+.qz-question{font-size:1.12rem;line-height:1.5;margin-bottom:1rem}
+
+.qz-card-foot{display:flex;flex-wrap:wrap;align-items:center;gap:.75rem;margin-top:1rem}
+.qz-card-foot>.qz-btn{margin-left:auto}
+.qz-verdict{font-weight:700;padding:.35rem .9rem;border-radius:999px;animation:qz-pop .35s cubic-bezier(.3,1.6,.5,1) both}
+.qz-verdict.is-right{color:var(--qz-good);background:var(--qz-good-bg)}
+.qz-verdict.is-partial{color:var(--qz-part);background:var(--qz-part-bg)}
+.qz-verdict.is-wrong{color:var(--qz-bad);background:var(--qz-bad-bg)}
+.qz-streak{font-weight:500}
+.qz-explanation{flex-basis:100%;order:1;color:var(--qz-mut);line-height:1.5;border-left:3px solid var(--qz-acc);padding:.2rem 0 .2rem .8rem;animation:qz-in .3s .05s ease-out both}
+.qz-next{order:0}
+@keyframes qz-pop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+
+@media(max-width:480px){.qz-card{padding:1rem .9rem .9rem}.qz-question{font-size:1.04rem}}
+@media(prefers-reduced-motion:reduce){.qz-card,.qz-verdict,.qz-explanation{animation:none}.qz-progress-fill{transition:none}}

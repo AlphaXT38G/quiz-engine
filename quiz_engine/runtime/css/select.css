@@ -1,0 +1,40 @@
+/* ── select.css: the selection screen (content, exercises, length, Start) ── */
+.qz-select{display:flex;flex-direction:column;gap:.9rem}
+.qz-panel{background:var(--qz-card);border:1px solid var(--qz-line);border-radius:var(--qz-radius);padding:.9rem 1rem}
+.qz-panel-head{display:flex;align-items:center;gap:.25rem;margin-bottom:.5rem}
+.qz-panel-head h3{margin:0;flex:1;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--qz-mut)}
+
+/* Weeks and chapters */
+.qz-weeks{display:flex;flex-direction:column;gap:.15rem}
+.qz-check{display:flex;align-items:center;gap:.6rem;padding:.4rem .45rem;border-radius:10px;cursor:pointer;min-height:2.4rem}
+.qz-check:hover{background:var(--qz-acc-bg)}
+.qz-check input{width:1.1rem;height:1.1rem;margin:0;flex:none;accent-color:var(--qz-acc);cursor:pointer}
+.qz-check-text{flex:1;min-width:0}
+.qz-week-head .qz-check-text{font-weight:600}
+.qz-chapters{margin-left:1.25rem;padding-left:.6rem;border-left:2px solid var(--qz-line)}
+.qz-pill{font-size:.75rem;color:var(--qz-mut);background:var(--qz-acc-bg);border-radius:999px;padding:.1rem .5rem;min-width:1.8rem;text-align:center}
+
+/* Kinds of exercise: chips */
+.qz-chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.qz-chip{font:inherit;font-size:.92rem;border-radius:999px;padding:.45rem 1rem;border:1px solid var(--qz-line);background:transparent;color:var(--qz-mut);
+  cursor:pointer;transition:transform .12s}
+.qz-chip.is-on{background:var(--qz-acc-bg);border-color:var(--qz-acc);color:var(--qz-acc);font-weight:600}
+.qz-chip:active{transform:scale(.95)}
+
+/* Length: a segmented control */
+.qz-segs{display:inline-flex;border:1px solid var(--qz-line);border-radius:999px;overflow:hidden}
+.qz-seg{font:inherit;border:0;background:transparent;color:var(--qz-mut);padding:.45rem 1.1rem;cursor:pointer}
+.qz-seg+.qz-seg{border-left:1px solid var(--qz-line)}
+.qz-seg.is-on{background:var(--qz-acc);color:var(--qz-card);font-weight:600}
+
+/* Count and Start, kept in view at the bottom while the lists scroll */
+.qz-start-bar{position:sticky;bottom:.75rem;display:flex;align-items:center;gap:1rem;background:var(--qz-card);border:1px solid var(--qz-line);
+  border-radius:999px;padding:.45rem .45rem .45rem 1.2rem;box-shadow:0 6px 24px rgba(0,0,0,.12)}
+.qz-count{flex:1;font-weight:600}
+.qz-start{padding-left:2rem;padding-right:2rem}
+
+/* Phones: the screens' music players sit in the bottom corners over the page, where a sticky bar
+   would stay under them; the page leaves room under its content to scroll it clear of them */
+@media(max-width:640px){.qz-start-bar{position:static}}
+@media(pointer:coarse){.qz-check{min-height:44px}.qz-chip,.qz-seg{min-height:44px}}
+@media(prefers-reduced-motion:reduce){.qz-chip{transition:none}}

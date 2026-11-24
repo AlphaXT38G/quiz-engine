@@ -1,0 +1,48 @@
+/* ── view.css: the quiz's frame (header, back arrow, sound), buttons, colours ──
+   The quiz takes its colours from the page's tokens (--bg --fg --card --line --mut --acc
+   --acc-bg --new --new-bg, set by notes-engine's base.css and every screen), so it looks like
+   the screen it is opened on, light or dark. Fallbacks keep it readable on a bare page.
+   Its own tokens (--qz-*) are the verdict colours, translucent to sit on any card. */
+.qz{
+  --qz-fg:var(--fg,#15171a);--qz-card:var(--card,#fff);--qz-line:var(--line,#e2e5ea);--qz-mut:var(--mut,#6b7280);
+  --qz-acc:var(--acc,#2457c5);--qz-acc-bg:var(--acc-bg,#eaf0fd);
+  --qz-good:var(--new,#1d7a46);--qz-good-bg:var(--new-bg,#dcf3e5);
+  --qz-bad:#d9480f;--qz-bad-bg:rgba(217,72,15,.13);--qz-part:#c98a12;--qz-part-bg:rgba(201,138,18,.15);
+  --qz-radius:14px;
+  color:var(--qz-fg);max-width:46rem;margin:0 auto;position:relative;z-index:1;
+  font-variant-numeric:tabular-nums
+}
+.qz *,.qz *::before,.qz *::after{box-sizing:border-box}
+
+/* Header: back arrow top left, title, sound toggle. Only divs and classes in the quiz (no
+   <header>, no <section>): the host page styles those elements, and its screens even more */
+.qz-head{display:flex;align-items:center;gap:.75rem;margin:0 0 1rem}
+.qz-titles{flex:1;min-width:0;display:flex;flex-direction:column}
+.qz-title{margin:0;font-size:1.35rem;line-height:1.2;overflow:hidden;text-overflow:ellipsis}
+.qz-kicker{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--qz-mut)}
+.qz-icon{flex:none;width:2.6rem;height:2.6rem;border-radius:50%;border:1px solid var(--qz-line);background:var(--qz-card);color:var(--qz-fg);
+  display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0;transition:transform .15s}
+.qz-icon svg{width:1.25rem;height:1.25rem;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.qz-icon:hover{transform:scale(1.06)}
+.qz-icon:active{transform:scale(.94)}
+.qz-back:hover{transform:translateX(-2px) scale(1.06)}
+
+/* Screens slide in */
+.qz-screen{animation:qz-in .28s ease-out both}
+@keyframes qz-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.qz-note{color:var(--qz-mut);text-align:center;padding:2rem 0}
+
+/* Buttons */
+.qz-btn{font:inherit;font-weight:600;border-radius:999px;padding:.6rem 1.3rem;border:1px solid var(--qz-line);background:var(--qz-card);color:var(--qz-fg);
+  cursor:pointer;transition:transform .12s,opacity .2s}
+.qz-btn:hover:not(:disabled){transform:translateY(-1px)}
+.qz-btn:active:not(:disabled){transform:scale(.97)}
+.qz-btn:disabled{opacity:.45;cursor:default}
+.qz-btn-primary{background:var(--qz-acc);border-color:var(--qz-acc);color:var(--qz-card)}
+.qz-link{font:inherit;font-size:.85rem;background:none;border:0;color:var(--qz-acc);cursor:pointer;padding:.25rem .4rem}
+.qz button:focus-visible,.qz input:focus-visible{outline:2px solid var(--qz-acc);outline-offset:2px}
+.qz code{font-size:.92em;background:var(--qz-acc-bg);padding:.05em .3em;border-radius:4px}
+
+/* Touch screens: every control at least 44 px */
+@media(pointer:coarse){.qz-icon{width:2.9rem;height:2.9rem}.qz-btn{min-height:44px}.qz-link{min-height:44px}}
+@media(prefers-reduced-motion:reduce){.qz-screen{animation:none}.qz-icon,.qz-btn{transition:none}}

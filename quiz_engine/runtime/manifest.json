@@ -1,0 +1,21 @@
+{
+  "js": [
+    "js/core.js",
+    "js/text.js",
+    "js/sound.js",
+    "js/types/choice.js",
+    "js/types/truefalse.js",
+    "js/pick.js",
+    "js/select.js",
+    "js/run.js",
+    "js/results.js",
+    "js/view.js"
+  ],
+  "css": [
+    "css/view.css",
+    "css/select.css",
+    "css/run.css",
+    "css/results.css",
+    "css/types/choice.css"
+  ]
+}
